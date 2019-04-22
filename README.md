@@ -4,12 +4,11 @@ Follow theo tutorial [OpenCV Face Recognition](https://www.pyimagesearch.com/201
 <br>
 
 ### Các phụ thuộc
-`pip install -r requirements.txt`
-`python down_landmarks.py`
-<br>
+`pip install -r requirements.txt`<br>
+`python down_landmarks.py`<br>
 
 ### Thêm ảnh vào database:
-Copy ảnh vào newdatabase, tên file ảnh là tên người trong ảnh.
+Copy ảnh vào newdatabase, tên file ảnh là tên người trong ảnh.<br>
 `python add_img.py`
 
 Ảnh sau khi được đọc sẽ được copy vào database, đồng thời thêm các vector, label và name vào dữ liệu lưu sẵn. Nếu không đọc được ảnh, ảnh vẫn sẽ nằm trong newdatabase
