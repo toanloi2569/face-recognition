@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[38]:
+# In[1]:
 
 
 # import the necessary packages
@@ -17,13 +17,14 @@ import os
 from cv2_imshow import cv2_imshow
 from align import AlignDlib
 
-# In[39]:
+
+# In[2]:
 
 
 from model import create_model
 
 
-# In[40]:
+# In[3]:
 
 
 print ('[INFO] loading face detector')
@@ -42,7 +43,13 @@ with open('database/x_name.pkl', 'rb') as f:
     x_name = pickle.load(f)
 
 
-# In[44]:
+# In[4]:
+
+
+print (x_name)
+
+
+# In[5]:
 
 
 alignment = AlignDlib('models/landmarks.dat')
@@ -68,7 +75,20 @@ def draw(img, text, box):
     return img
 
 
-# In[54]:
+# In[6]:
+
+
+with open('models/svm.pkl', 'rb') as f:
+    svm = pickle.load(f)
+
+
+# In[ ]:
+
+
+
+
+
+# In[8]:
 
 
 print ("[INFO] starting video stream...")
@@ -88,22 +108,26 @@ while True:
     if boxs is not None: 
         for box in boxs:
             img = align_image(frame, box)
-            yv = img2vect(img)
+            yv = np.reshape(img2vect(img), (1, -1))
             
-            minimum = 999
-            person = "unknow"
-            acc = 1
-            for xv, xn in zip(x_vector, x_name):
-                dist = np.sum(np.square(xv - yv))
-                if dist > 0.5: continue
-                if dist < minimum: 
-                    minimum = dist
-                    person = xn
-                    acc = (0.5 - dist)/0.5
-            
-            draw(frame, person + ' ' + str(acc), box)
+            dist = np.max(svm.decision_function(yv))
+            print (svm.decision_function(yv))
+            if dist < -0.2:
+                print (dist)
+                person = "unknow"
+                print (person)
+                print ('*'*60)
+            else:
+                lb = svm.predict(yv)
+                for i, name in enumerate(x_name):
+                    if x_label[i] == lb:
+                        person = name
+                        print (person)
+                        print (dist)
+                        print ('*'*60)
+                
+            draw(frame, person, box)
         
-
     cv2.imshow("Frame", frame)
     key = cv2.waitKey(1) & 0xFF
     fps.update()
@@ -112,5 +136,16 @@ while True:
 fps.stop()
 cv2.destroyAllWindows()
 vs.release()
+
+
+# In[8]:
+
+
+vs.release()
+
+
+# In[ ]:
+
+
 
 

@@ -15,6 +15,7 @@ from align import AlignDlib
 
 # In[2]:
 
+
 # Load model train sẵn
 from model import create_model
 nn4_small2_pretrained = create_model()
@@ -32,16 +33,16 @@ PATH_DATABASE = osjoin(os.getcwd(), 'database')
 PATH_DATABASE_IMAGE = osjoin(PATH_DATABASE, 'image')
 
 if not os.path.isfile(osjoin(PATH_DATABASE, 'x_vector.pkl')) or not os.path.isfile(osjoin(PATH_DATABASE, 'x_label.pkl')) or not os.path.isfile(osjoin(PATH_DATABASE, 'x_name.pkl')):
-	x_vector = []
-	x_label = []
-	x_name = []
+    x_vector = []
+    x_label = []
+    x_name = []
 else:
    with open(osjoin(PATH_DATABASE, 'x_vector.pkl'), 'rb') as f:
-    	x_vector = pickle.load(f)
+        x_vector = pickle.load(f)
    with open(osjoin(PATH_DATABASE, 'x_label.pkl'), 'rb') as f:
-   	x_label = pickle.load(f)
+       x_label = pickle.load(f)
    with open(osjoin(PATH_DATABASE, 'x_name.pkl'), 'rb') as f:
-   	x_name = pickle.load(f)
+       x_name = pickle.load(f)
 
 
 # In[4]:
@@ -69,26 +70,34 @@ if len(x_label) > 0:
 else:
     count = 0
 
-for mtimg in tqdm(os.listdir(PATH_NEW_DATABASE)):
-    ext = os.path.splitext(osjoin(PATH_NEW_DATABASE, mtimg))[1]
-    pathimg = osjoin(PATH_NEW_DATABASE,mtimg)
-    if ext != '.jpg' and  ext != '.jpeg': 
-        continue
-    img = load_img(pathimg)
-    if img is None : 
-        continue
-        
-    shutil.move(pathimg, osjoin(PATH_DATABASE_IMAGE, mtimg))
-    img = align_image(img)
-    img = (img / 255.).astype(np.float32)
-    img = np.expand_dims(img, axis=0)
-    x_vector.append(nn4_small2_pretrained.predict(img)[0])
-    x_label.append(count)
-    x_name.append(mtimg[:mtimg.rfind(ext)])
-    count += 1
+
+for root, directories, files in os.walk(PATH_NEW_DATABASE):
+    for d in tqdm(directories):
+        directory = osjoin(PATH_NEW_DATABASE, d)
+        for mtimg in os.listdir(directory):
+            pathimg = osjoin(directory, mtimg)
+            ext = os.path.splitext(pathimg)[1]
+            if ext != '.jpg' and  ext != '.jpeg':
+                shutil.move(pathimg, osjoin(PATH_DATABASE_IMAGE, 'x'))   
+                continue
+            img = load_img(pathimg)
+            
+            try:  
+                img = align_image(img)
+                img = (img / 255.).astype(np.float32)
+                img = np.expand_dims(img, axis=0)
+                x_vector.append(nn4_small2_pretrained.predict(img)[0])
+                x_label.append(count)
+                x_name.append(d)
+            except: 
+                print (osjoin(PATH_DATABASE_IMAGE, 'x'))
+                shutil.move(pathimg, osjoin(PATH_DATABASE_IMAGE, 'x')) 
+                continue
+        count += 1
+        shutil.move(directory, osjoin(PATH_DATABASE_IMAGE, d))
 
 
-# In[7]:
+# In[6]:
 
 
 # Lưu vector, nhãn và tên người 
@@ -99,6 +108,8 @@ with open(osjoin(PATH_DATABASE, 'x_label.pkl'), 'wb') as f:
 with open(osjoin(PATH_DATABASE, 'x_name.pkl'), 'wb') as f:
     pickle.dump(x_name, f)
 
+
+# In[ ]:
 
 
 

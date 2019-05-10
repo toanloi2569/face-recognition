@@ -8,11 +8,15 @@ Follow theo tutorial [OpenCV Face Recognition](https://www.pyimagesearch.com/201
 `python down_landmarks.py`<br>
 
 ### Thêm ảnh vào database:
-Copy ảnh vào newdatabase, tên file ảnh là tên người trong ảnh.<br>
+Tạo 1 folder với tên là tên người trong ảnh, ở trong folder newdatabase <br>
+Copy ảnh vào folder vừa được tạo, tên file ảnh nên là tên người trong ảnh.<br>
 `python add_img.py`
 
-Ảnh sau khi được đọc sẽ được copy vào database, đồng thời thêm các vector, label và name vào dữ liệu lưu sẵn. Nếu không đọc được ảnh, ảnh vẫn sẽ nằm trong newdatabase
+Ảnh sau khi được đọc sẽ được copy vào database, đồng thời thêm các vector, label và name vào dữ liệu lưu sẵn.
+`python re_train`
 <br>
 
 ### Chạy face recognition
 `python recognize_video.py`
+hoặc 
+`recognize_videos_svm.py`
