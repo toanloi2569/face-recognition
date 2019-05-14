@@ -4,6 +4,7 @@ Follow theo tutorial [OpenCV Face Recognition](https://www.pyimagesearch.com/201
 <br>
 
 ### Các phụ thuộc
+`pip install cmake`
 `pip install -r requirements.txt`<br>
 `python down_landmarks.py`<br>
 
