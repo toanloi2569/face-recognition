@@ -16,10 +16,15 @@ import cv2
 import os
 from cv2_imshow import cv2_imshow
 from align import AlignDlib
+from matplotlib import pyplot as plt
 
 
 # In[2]:
-
+ap = argparse.ArgumentParser()
+ap.add_argument("-i", "--image", required=True,
+	help="path to img need recognize")
+args = vars(ap.parse_args())
+img_to_recognize = cv2.imread(args["image"], 1)
 
 from model import create_model
 
@@ -42,13 +47,6 @@ with open('database/x_label.pkl', 'rb') as f:
 with open('database/x_name.pkl', 'rb') as f:
     x_name = pickle.load(f)
 
-
-# In[4]:
-
-
-print (x_name)
-
-
 # In[5]:
 
 
@@ -70,75 +68,36 @@ def draw(img, text, box):
     startY = box.top()
     endX = startX + box.width()
     endY = startY + box.height()
-    cv2.rectangle(img, (startX, startY), (endX, endY),(0, 255, 0), 1)
-    cv2.putText(img, text, (startX, startY), cv2.FONT_HERSHEY_SIMPLEX, 0.45, (0, 255, 0), 1)
+    cv2.rectangle(img, (startX, startY), (endX, endY),(0, 255, 0), 2)
+    cv2.putText(img, text, (startX, startY), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 0), 2)
     return img
 
 
-# In[6]:
-
-
-with open('models/svm.pkl', 'rb') as f:
-    svm = pickle.load(f)
-
-
-# In[ ]:
-
-
-
-
-
-# In[8]:
-
-
-print ("[INFO] starting video stream...")
-vs = cv2.VideoCapture(-1)
-time.sleep(2.0)
-
-# start the FPS throughput estimator
-fps = FPS().start()
-
-# loop over frames from the video file stream
-while True:
-    # grab the frame from the threaded video stream
-    ret, frame = vs.read()
-    
-    boxs = get_boxs(frame)
-       
-    if boxs is not None: 
-        for box in boxs:
-            img = align_image(frame, box)
-            yv = np.reshape(img2vect(img), (1, -1))
-            
-            dist = np.max(svm.decision_function(yv))
-            if dist < -0.2:
-                person = "unknow" 
-            else:
-                lb = svm.predict(yv)
-                for i, name in enumerate(x_name):
-                    if x_label[i] == lb:
-                        person = name
-                       
-            draw(frame, person, box)
+boxs = get_boxs(img_to_recognize)  
+if boxs is not None: 
+    for box in boxs:
+        img = align_image(img_to_recognize, box)
+        yv = img2vect(img)
         
-    cv2.imshow("Frame", frame)
-    key = cv2.waitKey(1) & 0xFF
-    fps.update()
-    if key == ord("q"):
-        break
-fps.stop()
-cv2.destroyAllWindows()
-vs.release()
+        minimum = 999
+        person = "unknow"
+        acc = 1
+        for xv, xn in zip(x_vector, x_name):
+            dist = np.sum(np.square(xv - yv))
+            if dist > 0.5: continue
+            if dist < minimum: 
+                minimum = dist
+                person = xn
+                acc = (0.5 - dist)/0.5
+        
+        img_to_recognize = draw(img_to_recognize, person, box)
+        plt.imshow(img_to_recognize)
+        plt.show()
 
-
-# In[8]:
-
-
-vs.release()
-
+else:
+    print ("No image found or The photo does not have a human face")
 
 # In[ ]:
-
 
 
 
