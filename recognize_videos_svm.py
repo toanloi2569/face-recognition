@@ -70,8 +70,8 @@ def draw(img, text, box):
     startY = box.top()
     endX = startX + box.width()
     endY = startY + box.height()
-    cv2.rectangle(img, (startX, startY), (endX, endY),(0, 0, 255), 2)
-    cv2.putText(img, text, (startX, startY), cv2.FONT_HERSHEY_SIMPLEX, 0.45, (0, 0, 255), 2)
+    cv2.rectangle(img, (startX, startY), (endX, endY),(255, 0, 0), 1)
+    cv2.putText(img, text, (startX, startY), cv2.FONT_HERSHEY_SIMPLEX, 0.45, (255, 0, 0), 1)
     return img
 
 
@@ -113,19 +113,13 @@ while True:
             dist = np.max(svm.decision_function(yv))
             print (svm.decision_function(yv))
             if dist < -0.2:
-                print (dist)
-                person = "unknow"
-                print (person)
-                print ('*'*60)
+                person = "unknow" 
             else:
                 lb = svm.predict(yv)
                 for i, name in enumerate(x_name):
                     if x_label[i] == lb:
                         person = name
-                        print (person)
-                        print (dist)
-                        print ('*'*60)
-                
+                       
             draw(frame, person, box)
         
     cv2.imshow("Frame", frame)
