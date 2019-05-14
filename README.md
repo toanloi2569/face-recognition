@@ -7,6 +7,7 @@ Follow theo tutorial [OpenCV Face Recognition](https://www.pyimagesearch.com/201
 `pip install cmake`<br>
 `pip install -r requirements.txt`<br>
 `python down_landmarks.py`<br>
+`mkdir database` <br>
 
 ### Thêm ảnh vào database:
 Tạo 1 folder với tên là tên người trong ảnh, ở trong folder newdatabase <br>
