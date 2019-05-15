@@ -1,9 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[38]:
-
-
 # import the necessary packages
 #from imutils.video import VideoStream
 from imutils.video import FPS
@@ -15,61 +9,19 @@ import time
 import cv2
 import os
 from cv2_imshow import cv2_imshow
-from align import AlignDlib
+from process_image import ProcessImage
 
-# In[39]:
-
-
-from model import create_model
-
-
-# In[40]:
-
-
-print ('[INFO] loading face detector')
-nn4_small_pretrained = create_model()
-nn4_small_pretrained.load_weights('weights/nn4.small2.v1.h5')
 
 print ('[INFO] loading emb face')
-import pickle 
 with open('database/x_vector.pkl', 'rb') as f:
     x_vector = pickle.load(f)
-    
 with open('database/x_label.pkl', 'rb') as f:
-    x_label = pickle.load(f)
-    
+    x_label = pickle.load(f)  
 with open('database/x_name.pkl', 'rb') as f:
     x_name = pickle.load(f)
 
 
-# In[44]:
-
-
-alignment = AlignDlib('models/landmarks.dat')
-def align_image(img, box):
-    return alignment.align(96, img, box,
-                           landmarkIndices=AlignDlib.OUTER_EYES_AND_NOSE)
-
-def get_boxs(img):
-    return alignment.getAllFaceBoundingBoxes(img)
-
-def img2vect(img):
-    img = (img / 255.).astype(np.float32)
-    img = np.expand_dims(img, axis=0)
-    return nn4_small_pretrained.predict(img)[0]
-
-def draw(img, text, box):
-    startX = box.left()
-    startY = box.top()
-    endX = startX + box.width()
-    endY = startY + box.height()
-    cv2.rectangle(img, (startX, startY), (endX, endY),(0, 0, 255), 2)
-    cv2.putText(img, text, (startX, startY), cv2.FONT_HERSHEY_SIMPLEX, 0.45, (0, 0, 255), 2)
-    return img
-
-
-# In[54]:
-
+process_image = ProcessImage()
 
 print ("[INFO] starting video stream...")
 vs = cv2.VideoCapture(-1)
@@ -82,17 +34,17 @@ fps = FPS().start()
 while True:
     # grab the frame from the threaded video stream
     ret, frame = vs.read()
-    
-    boxs = get_boxs(frame)
+    boxs = process_image.get_boxs(frame)
        
     if boxs is not None: 
         for box in boxs:
-            img = align_image(frame, box)
-            yv = img2vect(img)
+            img = process_image.align_image(frame, box)
+            yv = process_image.img2vect(img)
             
             minimum = 999
             person = "unknow"
             acc = 1
+
             for xv, xn in zip(x_vector, x_name):
                 dist = np.sum(np.square(xv - yv))
                 if dist > 0.5: continue
@@ -101,16 +53,14 @@ while True:
                     person = xn
                     acc = (0.5 - dist)/0.5
             
-            draw(frame, person + ' ' + str(acc), box)
+            process_image.draw(frame, person + ' ' + str(acc), box)
         
-
     cv2.imshow("Frame", frame)
     key = cv2.waitKey(1) & 0xFF
     fps.update()
     if key == ord("q"):
         break
+
 fps.stop()
 cv2.destroyAllWindows()
 vs.release()
-
-

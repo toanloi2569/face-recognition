@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<title>Search Img</title>
+<h1 class="text-center">Search Img</h1>
+<div class="row justify-content-center">
+    <div>
+        <form method=post enctype=multipart/form-data > 
+            <input type=file name=file>
+            <input type=submit value=Upload name=upload-file>
+        </form>
+        <hr>
+        {% if filename %}
+            <img src="{{ url_for ('uploaded_file', filename = filename) }}" width="300" height="auto" alt="Computer Hope">
+        {% endif %}
+        <input type="submit" value="Search" name="search"/>
+    </div>
+</div>
+{% endblock %}

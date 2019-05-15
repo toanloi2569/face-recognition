@@ -41,7 +41,6 @@ x_name = x_name[idx]
 
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.svm import LinearSVC
-from sklearn.metrics import f1_score, accuracy_score
 
 knn = KNeighborsClassifier(n_neighbors=5, metric = 'euclidean')
 svc = LinearSVC()

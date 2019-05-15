@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% block head %}
+    <link rel="stylesheet" href= "{{ url_for('static', filename='css/bootstrap.min.css')}}" />
+    <link rel="stylesheet" href= "{{ url_for('static', filename='css/style.css')}}" />
+    <source src="{{ url_for('static', filename='js/bootstrap.min.js')}}" type="text/javascript" />
+    <title>My Webpage</title>
+    {% endblock %}
+</head>
+<body>
+    <h1>Welcome to my project</h1>
+    <hr>
+    <div id="content">{% block content %}{% endblock %}</div>
+    <hr>
+    <div id="footer">
+        <form method="get" action="/">
+            <button type="submit" class="btn btn-info">Main page</button>
+        </form>
+        {% block footer %}
+        &copy; Copyright 2019 by <a href="http://domain.invalid/">you</a>.
+        {% endblock %}
+    </div>
+</body>
+</html>
