@@ -11,7 +11,7 @@
         </form>
         <hr>
         {% if filename %}
-            <img src="{{ url_for ('uploaded_file', filename = filename) }}" width="350" height="auto" alt="Computer Hope">
+            <img src="{{ url_for ('static', filename = 'uploaded_file/'+filename) }}" width="350" height="auto" alt="Computer Hope">
         {% endif %}
         <div class="row" style="margin-top: 5px">
             <div class="col text-center">

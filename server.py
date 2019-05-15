@@ -4,7 +4,7 @@ from werkzeug.utils import secure_filename
 import os
 
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
-UPLOAD_FOLDER = 'uploaded_file/'
+UPLOAD_FOLDER = 'static/uploaded_file/'
 
 # Instantiate our Node
 app = Flask(__name__)
