@@ -11,9 +11,13 @@
         </form>
         <hr>
         {% if filename %}
-            <img src="{{ url_for ('uploaded_file', filename = filename) }}" width="300" height="auto" alt="Computer Hope">
+            <img src="{{ url_for ('uploaded_file', filename = filename) }}" width="350" height="auto" alt="Computer Hope">
         {% endif %}
-        <input type="submit" value="Search" name="search"/>
+        <div class="row" style="margin-top: 5px">
+            <div class="col text-center">
+                <button class="btn btn-default" name="search">Search</button>
+            </div>
+        </div>
     </div>
 </div>
 {% endblock %}
