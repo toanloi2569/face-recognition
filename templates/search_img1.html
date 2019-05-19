@@ -1,0 +1,57 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<title>Search Img</title>
+<h1 class="text-center">Search Img</h1>
+<div class="row justify-content-center">
+    <div>
+        <form method=post enctype=multipart/form-data > 
+            <input type=file name=file>
+            <input type=submit value=Upload name=upload-file>
+        </form>
+        <hr>
+        {% if filename %}
+            <img src="{{ url_for ('static', filename = 'uploaded_file/'+filename) }}" width="350" height=" " alt="Computer Hope">
+        {% endif %}
+        <div class="row" style="margin-top: 5px">
+            <div class="col text-center">
+                <form method="POST">
+                    <input type="submit" class="btn btn-default" name="search" value="Search">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<hr>
+
+<div class="row">
+        <div class="row col-md-6"> 
+            <div class="col-sm-3" margin="10px">
+                {% if detected %}
+                    <img src="data:image/jpeg;base64,{{detected}}" width="200" height="auto" alt="Computer Hope">
+                    <p>deteced</p>
+                {% endif %}
+            </div>
+            <div class="col-sm-3" margin="10px">
+                {% if align %}
+                    <img src="data:image/jpeg;base64,{{align}}" width="200" height="auto" alt="Computer Hope">
+                    <p>align</p>
+                {% endif %}
+            </div>
+        </div>
+    
+        <div class="row col-md-6" >
+            {% if name_of_nearest_faces %}
+                {% for i in range(name_of_nearest_faces|length) %}
+                    <div class="col-sm-3" style="margin: 30">
+                        <img src="{{ url_for ('static', filename = 'database/image/'+name_of_nearest_faces[i] + '/' + path_to_nearest_faces[i]) }}" style="width: 120px; height: 120px; margin-right: 1%; margin-bottom: 0.5em;" alt="Computer Hope">
+                        <p>{{(i+1)|string + ' : ' + name_of_nearest_faces[i]}}</p>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+     
+     </div>
+
+{% endblock %}

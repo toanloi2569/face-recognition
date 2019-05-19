@@ -11,20 +11,24 @@ from process_image import ProcessImage
 
 
 PATH_NEW_DATABASE = osjoin(os.getcwd(), 'newdatabase')
-PATH_DATABASE = osjoin(os.getcwd(), 'database')
+PATH_DATABASE = osjoin(os.getcwd(), 'static', 'database')
 PATH_DATABASE_IMAGE = osjoin(PATH_DATABASE, 'image')
 
-if not os.path.isfile(osjoin(PATH_DATABASE, 'x_vector.pkl')) or not os.path.isfile(osjoin(PATH_DATABASE, 'x_label.pkl')) or not os.path.isfile(osjoin(PATH_DATABASE, 'x_name.pkl')):
-    x_vector = []
-    x_label = []
-    x_name = []
+if not os.path.isfile(osjoin(PATH_DATABASE, 'x_vector.pkl')) or not os.path.isfile(osjoin(PATH_DATABASE, 'x_label.pkl')):
+    if not os.path.isfile(osjoin(PATH_DATABASE, 'x_name.pkl')) or not os.path.isfile(osjoin(PATH_DATABASE, 'x_name_map.pkl')):
+        x_vector = []
+        x_label = []
+        x_name = []
+        x_name_map = []
 else:
-   with open(osjoin(PATH_DATABASE, 'x_vector.pkl'), 'rb') as f:
+    with open(osjoin(PATH_DATABASE, 'x_vector.pkl'), 'rb') as f:
         x_vector = pickle.load(f)
-   with open(osjoin(PATH_DATABASE, 'x_label.pkl'), 'rb') as f:
-       x_label = pickle.load(f)
-   with open(osjoin(PATH_DATABASE, 'x_name.pkl'), 'rb') as f:
-       x_name = pickle.load(f)
+    with open(osjoin(PATH_DATABASE, 'x_label.pkl'), 'rb') as f:
+        x_label = pickle.load(f)
+    with open(osjoin(PATH_DATABASE, 'x_name.pkl'), 'rb') as f:
+        x_name = pickle.load(f)
+    with open(osjoin(PATH_DATABASE, 'x_name_map.pkl'), 'rb') as f:
+        x_name_map = pickle.load(f)
 
 # Đọc ảnh, cut ảnh trong newdatabase và paste vào database nếu đọc được
 # Tính toán các vector, gán nhãn và lấy tên người trong ảnh
@@ -52,6 +56,7 @@ for root, directories, files in os.walk(PATH_NEW_DATABASE):
                 x_vector.append(v)
                 x_label.append(count)
                 x_name.append(d)
+                x_name_map.append(osjoin(directory, mtimg))
             except: 
                 print (osjoin(PATH_DATABASE_IMAGE, 'x'))
                 shutil.move(pathimg, osjoin(PATH_DATABASE_IMAGE, 'x')) 
@@ -66,3 +71,5 @@ with open(osjoin(PATH_DATABASE, 'x_label.pkl'), 'wb') as f:
     pickle.dump(x_label, f)
 with open(osjoin(PATH_DATABASE, 'x_name.pkl'), 'wb') as f:
     pickle.dump(x_name, f)
+with open(osjoin(PATH_DATABASE, 'x_name_map.pkl'), 'wb') as f:
+    pickle.dump(x_name_map, f)

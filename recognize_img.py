@@ -23,11 +23,11 @@ img_to_recognize = cv2.imread(args["image"], 1)
 
 print ('[INFO] loading emb face')
 import pickle 
-with open('database/x_vector.pkl', 'rb') as f:
+with open('static/database/x_vector.pkl', 'rb') as f:
     x_vector = pickle.load(f)
-with open('database/x_label.pkl', 'rb') as f:
+with open('static/database/x_label.pkl', 'rb') as f:
     x_label = pickle.load(f)
-with open('database/x_name.pkl', 'rb') as f:
+with open('static/database/x_name.pkl', 'rb') as f:
     x_name = pickle.load(f)
 
 

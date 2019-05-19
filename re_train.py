@@ -16,7 +16,7 @@ import numpy as np
 import pickle
 
 PATH_NEW_DATABASE = osjoin(os.getcwd(), 'newdatabase')
-PATH_DATABASE = osjoin(os.getcwd(), 'database')
+PATH_DATABASE = osjoin(os.getcwd(), 'static', 'database')
 PATH_DATABASE_IMAGE = osjoin(PATH_DATABASE, 'image')
 
 with open(osjoin(PATH_DATABASE, 'x_vector.pkl'), 'rb') as f:

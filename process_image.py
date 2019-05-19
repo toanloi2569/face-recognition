@@ -4,11 +4,15 @@ import shutil
 import numpy as np
 from align import AlignDlib
 from model import create_model
+from PIL import Image
+import io
+import base64
 
 class ProcessImage:
     def __init__(self):
         self.nn4_small_pretrained = create_model()
         self.nn4_small_pretrained.load_weights('weights/nn4.small2.v1.h5')
+        self.nn4_small_pretrained._make_predict_function()
         self.alignment = AlignDlib('models/landmarks.dat')
 
     def align_image(self, img, box):
@@ -31,13 +35,20 @@ class ProcessImage:
         startY = box.top()
         endX = startX + box.width()
         endY = startY + box.height()
-        cv2.rectangle(img, (startX, startY), (endX, endY),(0, 0, 255), 5)
-        cv2.putText(img, text, (startX, startY), cv2.FONT_HERSHEY_SIMPLEX, 0.45, (0, 0, 255), 5)
+        cv2.rectangle(img, (startX, startY), (endX, endY),(0, 255, 0), 10)
+        cv2.putText(img, text, (startX, startY), cv2.FONT_HERSHEY_SIMPLEX, 0.45, (0, 255, 0), 10)
         return img
 
     def load_img(self, path):
         img = cv2.imread(path, 1)
-        return img
+        return img[...,::-1]
 
     def save_img(self, img, path):
         cv2.imwrite(path,img)
+
+    def img2base64(self, img):
+        pil_img = Image.fromarray(img)
+        buff = io.BytesIO()
+        pil_img.save(buff, format="JPEG")
+        new_image_string = base64.b64encode(buff.getvalue()).decode("utf-8")
+        return new_image_string

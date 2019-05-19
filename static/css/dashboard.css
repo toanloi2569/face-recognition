@@ -1,0 +1,79 @@
+
+#circle {
+  display: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  width: 200px;
+  height: 200px;
+  z-index: 10000;	
+}
+
+.loader {
+width: calc(100% - 0px);
+height: calc(100% - 0px);
+border: 12px solid #162534;
+border-top: 12px solid #09f;
+border-radius: 50%;
+animation: rotate 5s linear infinite;
+}
+
+@keyframes rotate {
+100% {transform: rotate(360deg);}
+} 
+
+.anotation{
+  display: inline;
+  float: right ;
+  height: 20px;
+}
+.anotation_term{
+  display: block;
+  float: left;
+  height: 15px;
+  position: relative ;
+  width: 15px ;
+  background: black;
+}
+
+
+#warning{
+    display: none ;
+    background: rgb(0,0,0);
+    opacity: 0.5;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    z-index: 1000;
+    } 
+#box_warning{
+      display: none ;
+      background: rgb(255,255,255);
+      opacity: 1;
+      width: 30% ;
+      height: 20%;
+      position: fixed ;
+      top: 35%;
+      left: 35%;
+      border-radius: 15px;
+      z-index: 1001;
+    }
+#ok,#cance{
+      background: rgb(124, 208, 234);
+      width: 75px;
+      height: 30px;
+      position: absolute;
+      bottom: 10%;
+      border-radius: 15px;
+      text-align: center;
+      line-height: 30px ;
+    }
+#ok{left: 25%;}
+#cance{left: 55% ;}
+#ok:hover , #cance:hover ,#box-run-statistic:hover{
+      cursor: pointer;
+    }
+    
