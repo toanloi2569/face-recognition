@@ -138,3 +138,4 @@ dmypy.json
 
 images/
 models/landmarks.dat
+lfw/

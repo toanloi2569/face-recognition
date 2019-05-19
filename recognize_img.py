@@ -49,7 +49,7 @@ if boxs is not None:
                 person = xn
                 acc = (0.5 - dist)/0.5
         
-        img_to_recognize = process_image.draw(img_to_recognize, person, box)
+        img_to_recognize = process_image.draw(img_to_recognize, person + ' ' +  str(round(acc*100)), box)
         plt.imshow(img_to_recognize)
         plt.show()
 

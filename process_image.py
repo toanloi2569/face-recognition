@@ -35,8 +35,8 @@ class ProcessImage:
         startY = box.top()
         endX = startX + box.width()
         endY = startY + box.height()
-        cv2.rectangle(img, (startX, startY), (endX, endY),(0, 255, 0), 10)
-        cv2.putText(img, text, (startX, startY), cv2.FONT_HERSHEY_SIMPLEX, 0.45, (0, 255, 0), 10)
+        cv2.rectangle(img, (startX, startY), (endX, endY),(0, 255, 0), 2)
+        cv2.putText(img, text, (startX, startY), cv2.FONT_HERSHEY_SIMPLEX, 0.45, (0, 255, 0), 2)
         return img
 
     def load_img(self, path):
