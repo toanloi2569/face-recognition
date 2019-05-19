@@ -73,109 +73,97 @@
 <body class="">
     <div class="wrapper ">
 
-        <div class="main-panel">
+        <div class="content">
 
-            <div class="content">
-                <div class="container-fluid">
-                    <form method=post enctype=multipart/form-data> <div class="row">
-                        <div class="col-md-6" style="min-height:600px">
-                            <div class="col-md-12" style="height:98%">
-                                <div class="card card-chart" style="display: inline-block">
-                                    <div class="card-header card-header-primary">
-                                        <h4 class="card-title">Search Image</h4>
-                                        <p class="card-category">Please, upload image</p>
-                                    </div>
-                                    <div class="card-body">
-                                        <div style="margin: 5px">
-                                            <input type=file name=file>
-                                            <input type=submit value=Upload name=upload-file style="margin: px">
-                                        </div>
-                                        {% if filename %}
-                                        <img src="{{ url_for ('static', filename = 'uploaded_file/'+filename) }}"
-                                            width="350" height=" " alt="Computer Hope">
-                                        {% endif %}
-                                    </div>
-                                    <div class="card-body text-center">
-                                        <div class="col text-center">
-                                            <form method="POST">
-                                                <input type="submit" class="btn btn-default" name="search"
-                                                    value="Search">
-                                            </form>
-                                        </div>
-                                    </div>
+            <div class="row">
+                <div class="col-md-5" style="min-height:600px">
+                    <form method=post enctype=multipart/form-data> <div class="col-md-12" style="height:98%">
+                        <div class="card card-chart" style="display: inline-block">
+                            <div class="card-header card-header-primary">
+                                <h4 class="card-title">Search Image</h4>
+                                <p class="card-category">Please, upload image</p>
+                            </div>
+                            <div class="card-body">
+                                <div style="margin: 5px">
+                                    <input type=file name=file>
+                                    <input type=submit value=Upload name=upload-file style="margin: px">
+                                </div>
+                                {% if filename %}
+                                <img src="{{ url_for ('static', filename = 'uploaded_file/'+filename) }}" width="400"
+                                    height="auto" alt="Computer Hope">
+                                {% endif %}
+                            </div>
+                            <div class="card-body text-center">
+                                <div class="col text-center">
+                                    <form method="POST">
+                                        <input type="submit" class="btn btn-default" name="search" value="Search">
+                                    </form>
                                 </div>
                             </div>
                         </div>
                     </form>
+                </div>
+            </div>
 
-                    {% if name_of_nearest_faces %}
-                    <div class="col-md-6" style="min-height:600px">
-                        <div class="row col-md-12" style="height:98%">
-                            <div class="card card-chart" style="display: inline-block">
-                                <div class="card-header card-header-primary">
-                                    <h4 class="card-title">Search Image</h4>
-                                    <p class="card-category">Please, upload image</p>
-                                </div>
-                                {% for i in range(name_of_nearest_faces|length)  %}
 
-                                <span class="col-md-6 float-left" href="">
-                                    <div class="border bg-success text-white rounded" style="margin: 3px; padding:5px">
-                                        <p class="text-center card-category" style="margin-bottom:-10px">
-                                            {{ i+1 }} </p>
-                                        <p class="text-left card-category" style="margin-bottom:-10px">Name :
-                                            {{ name_of_nearest_faces[i] }} </p>
-                                        <hr>
-                                        <img src="{{ url_for ('static', filename = 'database/image/' +name_of_nearest_faces[i] + '/'+ path_to_nearest_faces[i]) }}" class="rounded"
-                                            alt="your image" width="120px" height="120px" style="margin-top: -10px">
-                                    </div>
-                                </span>
 
-                                {% endfor %}
+            {% if detected %}
+            <div class="col-md-3" style="min-height:600px">
+                <div class="row col-md-12" style="height:98%">
+                    <div class="card card-chart" style="display: inline-block">
+                        <div class="card-header card-header-primary">
+                            <h4 class="card-title">Detected - Align</h4>
+                        </div>
+                        <div margin="30px">
+                            <div margin="10px" class="text-center">
+                                {% if detected %}
+                                <p style="margin-bottom:-5px">detected</p>
+                                <img src="data:image/jpeg;base64,{{detected}}" class="rounded" width="200" height="auto"
+                                    alt="Computer Hope">
+                                
+                                {% endif %}
+                            </div>
+                            <hr>
+                            <div margin="10px" class="text-center">
+                                {% if align %}
+                                <p style="margin-bottom:-5px">align</p>
+                                <img src="data:image/jpeg;base64,{{align}}" class="rounded" width="200" height="auto"
+                                    alt="Computer Hope">
+                                
+                                {% endif %}
                             </div>
                         </div>
                     </div>
-                    {% endif %}
-
                 </div>
-
-
             </div>
+            {% endif %}
+
+            {% if name_of_nearest_faces %}
+            <div class="col-md-4" style="min-height:600px">
+                <div class="row col-md-12" style="height:98%">
+                    <div class="card card-chart" style="display: inline-block">
+                        <div class="card-header card-header-primary">
+                            <h4 class="card-title">Result</h4>
+                        </div>
+                        {% for i in range(name_of_nearest_faces|length)  %}
+
+                        <span class="col-md-6 float-left">
+                            <div class="border bg-success text-white rounded" style="margin: 3px; padding:5px">
+
+                                <p class="text-left card-category" style="margin-bottom:-10px">
+                                        {{ i+1 }} : {{ name_of_nearest_faces[i] }} </p>
+                                <hr>
+                                <img src="{{ url_for ('static', filename = 'database/image/' +name_of_nearest_faces[i] + '/'+ path_to_nearest_faces[i]) }}"
+                                    class="rounded" alt="your image" width="120px" height="120px"
+                                    style="margin-top: -10px">
+                            </div>
+                        </span>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
         </div>
-        <footer class="footer">
-            <div class="container-fluid">
-                <nav class="float-left">
-                    <ul>
-                        <li>
-                            <a href="https://github.com/TorRient/electronic-id-card">
-                                SYSTEM ID
-                            </a>
-                        </li>
-                        <li>
-                            <a href="https://github.com/TorRient/electronic-id-card">
-                                About Us
-                            </a>
-                        </li>
-                        <li>
-                            <a href="https://github.com/TorRient/electronic-id-card">
-                                Blog
-                            </a>
-                        </li>
-                        <li>
-                            <a href="https://github.com/TorRient/electronic-id-card">
-                                Licenses
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
-                <div class="copyright float-right">
-                    &copy;
-                    <script>
-                        document.write(new Date().getFullYear())
-                    </script>, Design <i class="material-icons">favorite</i> by
-                    <a href="https://github.com/TorRient/electronic-id-card" target="_blank">ENDGAME</a> group.
-                </div>
-            </div>
-        </footer>
     </div>
     </div>
 </body>
