@@ -65,7 +65,6 @@ def up_file(request):
     file.save(pathfile)
     return render_template('search_img.html', filename=filename)
 
-# def search():
 
 def face_detect(pathfile):
     img = process_image.load_img(pathfile)
