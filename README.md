@@ -6,19 +6,26 @@ Follow theo tutorial [OpenCV Face Recognition](https://www.pyimagesearch.com/201
 ### Các phụ thuộc
 `pip install cmake`<br>
 `pip install -r requirements.txt`<br>
-`python src/down_landmarks.py`<br>
+`python down_landmarks.py`<br>
 `mkdir database` <br>
 
 ### Thêm ảnh vào database:
 Tạo 1 folder với tên là tên người trong ảnh, ở trong folder newdatabase <br>
 Copy ảnh vào folder vừa được tạo, tên file ảnh nên là tên người trong ảnh.<br>
-`python src/add_img.py`
+`python add_img.py`
 
-Ảnh sau khi được đọc sẽ được copy vào database, đồng thời thêm các vector, label và name vào dữ liệu lưu sẵn.
-`python src/re_train`
+Ảnh sau khi được đọc sẽ được copy vào database, đồng thời thêm các vector, label và name vào dữ liệu lưu sẵn. <br>
+`python re_train`
 <br>
 
 ### Chạy face recognition
-`python src/recognize_video.py`
-hoặc 
-`python src/recognize_video_svm.py`
+Nhận diện trong videos sử dụng phương pháp phân loại theo khoảng cách vector 
+`python recognize_video.py -v [filename]`
+Nhận diện trong videos sử dụng phương pháp phân loại theo thuật toán  SVM
+`python recognize_video_svm.py -v [filename]`
+Nhận diện trong ảnh
+`python recognize_img.py -i [filename]`
+
+### Chạy server nhận diện ảnh
+`python server.py`
+Truy cập vào http://localhost:5000/uploader
