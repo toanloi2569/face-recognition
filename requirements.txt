@@ -6,4 +6,4 @@ opencv-python==4.1.0.25
 dlib==19.17.0
 imutils==0.5.2
 keras==2.2.4
-tensorflow==1.13.1
+tensorflow==2.5.0
